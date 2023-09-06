@@ -1,0 +1,11 @@
+<div class="container">
+  <h1>Cat Map</h1>
+  <br>
+  <p>The information provided in the map below is not definite and should not be taken as such.</p>
+  <div *ngIf="apiLoaded | async">
+    <br>
+    <google-map width="990px" height="550px" [options]="options">
+      <map-marker *ngFor="let position of markerPositions" [position]="position" [options]="markerOptions"></map-marker>
+    </google-map>
+  </div>
+</div>
