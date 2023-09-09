@@ -1,1 +1,107 @@
-<p>submit works!</p>
+<div class="flex flex-col items-center justify-center h-full">
+  <div class="text-center p-5">
+    <h1 class="text-3xl text-[#7f0019]">Cat Map Submission</h1>
+    <p class="mt-5">If you know of a cat that is not already in <a routerLink="/map" class="underline text-[#7f0019]">our map</a>, please use the form below to submit their information.</p>
+    <br>
+    <p>It may take a few days for your cat to appear on our map, as submissions are processed manually.</p>
+  </div>
+
+  <div class="text-left w-full max-w-md p-5">
+    <h1 class="text-2xl">Basic Information <span class="font-bold">(required)</span></h1>
+    <form [formGroup]="submitForm" (ngSubmit)="processForm()">
+      <div class="mb-6 mt-5">
+        <label for="cat-name" class="block mb-2 text-md font-medium text-gray-900">Name of Cat</label>
+        <input type="text" formControlName="name" class="bg-gray-50 border border-[#7f0019] text-gray-900 text-md rounded-lg focus:ring-[#7f0019] focus:border-[#7f0019] block w-full p-2.5" required>
+      </div>
+
+      <div class="mb-6">
+        <label for="gender" class="block mb-2 text-md font-medium text-gray-900">Gender</label>
+        <select formControlName="gender" class="bg-gray-50 border border-[#7f0019] text-gray-900 text-md rounded-lg focus:ring-[#7f0019] focus:border-[#7f0019] block w-full p-2.5">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="idk">I don't know</option>
+        </select>
+      </div>
+
+      <div class="mb-6">
+        <label for="community" class="block mb-2 text-md font-medium text-gray-900">Community</label>
+        <select formControlName="community" class="bg-gray-50 border border-[#7f0019] text-gray-900 text-md rounded-lg focus:ring-[#7f0019] focus:border-[#7f0019] block w-full p-2.5">
+          <option value="ang-mo-kio">Ang Mo Kio</option>
+          <option value="bedok">Bedok</option>
+          <option value="bishan">Bishan</option>
+          <option value="boon-lay">Boon Lay</option>
+          <option value="bukit-batok">Bukit Batok</option>
+          <option value="bukit-merah">Bukit Merah</option>
+          <option value="bukit-panjang">Bukit Panjang</option>
+          <option value="changi">Changi</option>
+          <option value="choa-chu-kang">Choa Chu Kang</option>
+          <option value="clementi">Clementi</option>
+          <option value="downtown-core">Downtown Core</option>
+          <option value="geylang">Geylang</option>
+          <option value="hougang">Hougang</option>
+          <option value="jurong-east">Jurong East</option>
+          <option value="jurong-west">Jurong West</option>
+          <option value="kallang">Kallang</option>
+          <option value="lim-chu-kang">Lim Chu Kang</option>
+          <option value="mandai">Mandai</option>
+          <option value="marina-east">Marina East</option>
+          <option value="marina-south">Marina South</option>
+          <option value="marine-parade">Marine Parade</option>
+          <option value="newton">Newton</option>
+          <option value="novena">Novena</option>
+          <option value="orchard">Orchard</option>
+          <option value="outram">Outram</option>
+          <option value="pasir-ris">Pasir Ris</option>
+          <option value="paya-lebar">Paya Lebar</option>
+          <option value="pioneer">Pioneer</option>
+          <option value="punggol">Punggol</option>
+          <option value="queenstown">Queenstown</option>
+          <option value="river-valley">River Valley</option>
+          <option value="rochor">Rochor</option>
+          <option value="seletar">Seletar</option>
+          <option value="sembawang">Sembawang</option>
+          <option value="sengkang">Sengkang</option>
+          <option value="serangoon">Serangoon</option>
+          <option value="sungei-kadut">Sungei Kadut</option>
+          <option value="tampines">Tampines</option>
+          <option value="tanglin">Tanglin</option>
+          <option value="tengah">Tengah</option>
+          <option value="toa-payoh">Toa Payoh</option>
+          <option value="tuas">Tuas</option>
+          <option value="woodlands">Woodlands</option>
+          <option value="yishun">Yishun</option>
+        </select>
+        <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500">Select the community the cat belongs to here. Commcat will automatically give it a random location on the map within that community.</p>
+      </div>
+
+      <div class="mb-6">
+        <label class="block mb-2 text-md font-medium text-gray-900" for="cat_picture">Upload a picture</label>
+        <input #picture formControlName="picture" class="block w-full text-md text-gray-900 border border-[#7f0019] rounded-lg cursor-pointer bg-gray-50 focus:outline-none" type="file">
+      </div>
+
+      <h1 class="text-2xl mt-5">Other Information <span class="font-bold">(optional)</span></h1>
+
+      <div class="mb-6 mt-3">
+        <label for="likes" class="block mb-2 text-md font-medium text-gray-900">Likes</label>
+        <textarea formControlName="likes" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-[#7f0019] focus:ring-[#7f0019] focus:border-[#7f0019]" placeholder="Butt pats, ear scratches..."></textarea>
+      </div>
+
+      <div class="mb-6 mt-3">
+        <label for="message" class="block mb-2 text-md font-medium text-gray-900">Dislikes</label>
+        <textarea formControlName="dislikes" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-[#7f0019] focus:ring-[#7f0019] focus:border-[#7f0019]" placeholder="Nasty humans, cheap food..."></textarea>
+      </div>
+
+      <div class="mb-6 mt-3">
+        <label for="message" class="block mb-2 text-md font-medium text-gray-900">Personality</label>
+        <textarea formControlName="personality" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-[#7f0019] focus:ring-[#7f0019] focus:border-[#7f0019]" placeholder="A true diva..."></textarea>
+      </div>
+
+      <div class="mb-6 mt-3">
+        <label for="message" class="block mb-2 text-md font-medium text-gray-900">Other Information</label>
+        <textarea formControlName="other" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-[#7f0019] focus:ring-[#7f0019] focus:border-[#7f0019]" placeholder="Can usually be found sleeping on..."></textarea>
+      </div>
+
+      <button type="submit" class="text-white bg-[#7f0019] font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-200" [disabled]="submitForm.invalid">Submit</button>
+        </form>
+  </div>
+</div>
