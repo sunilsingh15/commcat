@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { Observable, of } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
+import { CommcatService } from 'src/app/commcat.service';
 
 @Component({
   selector: 'app-map',
@@ -13,12 +14,27 @@ export class MapComponent implements OnInit {
   options!: google.maps.MapOptions;
   markerOptions!: google.maps.MarkerOptions;
   markerPositions!: google.maps.LatLngLiteral[];
+  
   catName: string = 'Cat';
+  service = inject(CommcatService);
+  sub$!: Subscription;
 
   @ViewChild(MapInfoWindow)
   infoWindow!: MapInfoWindow;
 
   ngOnInit(): void {
+
+    this.sub$ = this.service.getCoordinates().subscribe({
+      next: (result) => {
+        this.markerPositions = result.map(item => ({
+          lat: item.lat,
+          lng: item.lng
+        }))
+       },
+      error: (err) => { console.log(err); },
+      complete: () => { this.sub$.unsubscribe(); }
+    });
+
     this.loadGoogleMapsApi().subscribe(() => {
       this.apiLoaded = of(true);
 
@@ -37,16 +53,6 @@ export class MapComponent implements OnInit {
           scaledSize: new google.maps.Size(20, 20)
         }
       };
-
-      this.markerPositions = [
-        { lat: 1.42, lng: 103.8 },
-        { lat: 1.335, lng: 103.9 },
-        { lat: 1.345, lng: 103.96 },
-        { lat: 1.365, lng: 103.72 },
-        { lat: 1.315, lng: 103.69 },
-        {lat: 1.3732241859585121, lng: 103.74611465231567}
-      ];
-
     }, () => {
       this.apiLoaded = of(false);
     });

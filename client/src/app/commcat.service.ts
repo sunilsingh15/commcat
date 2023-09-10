@@ -10,6 +10,10 @@ export class CommcatService {
 
   constructor(private http: HttpClient) { }
 
+  getCoordinates():Observable<any[]> {
+    return this.http.get<any[]>('/api/locations');
+  }
+
   postForm(form: FormGroup, picture: ElementRef): Observable<any> {
 
     const data = new FormData();
