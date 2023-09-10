@@ -34,6 +34,7 @@ public class CatService {
 
         newCat.append("_id", catId);
         newCat.append("name", name);
+        newCat.append("gender", gender);
         newCat.append("community", community);
         newCat.append("location", location);
         newCat.append("picture", s3Repo.uploadImage(picture, catId));
