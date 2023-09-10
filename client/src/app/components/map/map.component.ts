@@ -14,25 +14,30 @@ export class MapComponent implements OnInit {
   options!: google.maps.MapOptions;
   markerOptions!: google.maps.MarkerOptions;
   markerPositions!: google.maps.LatLngLiteral[];
-  
+
   catName: string = 'Cat';
+  catImage: string = '';
+  catId: string = '';
+  isLoading: boolean = true;
+
   service = inject(CommcatService);
-  sub$!: Subscription;
+  mapSub$!: Subscription;
+  markerSub$!: Subscription;
 
   @ViewChild(MapInfoWindow)
   infoWindow!: MapInfoWindow;
 
   ngOnInit(): void {
 
-    this.sub$ = this.service.getCoordinates().subscribe({
+    this.mapSub$ = this.service.getCoordinates().subscribe({
       next: (result) => {
         this.markerPositions = result.map(item => ({
           lat: item.lat,
           lng: item.lng
         }))
-       },
+      },
       error: (err) => { console.log(err); },
-      complete: () => { this.sub$.unsubscribe(); }
+      complete: () => { this.mapSub$.unsubscribe(); }
     });
 
     this.loadGoogleMapsApi().subscribe(() => {
@@ -79,7 +84,25 @@ export class MapComponent implements OnInit {
   }
 
   openWindow(marker: MapMarker) {
-    console.log(marker.getPosition()?.toJSON());
+
+    this.isLoading = true;
+
+    const markerLoc = marker.getPosition()?.toJSON();
+
+    if (markerLoc && markerLoc.lat !== undefined && markerLoc.lng !== undefined) {
+      this.markerSub$ = this.service.getCatInfoForWindow(markerLoc.lat, markerLoc.lng).subscribe({
+        next: (result) => {
+          this.catId = result.id;
+          this.catName = result.name;
+          this.catImage = result.url;
+          this.isLoading = false;
+        },
+        error: (err) => { console.log(err); },
+        complete: () => { this.markerSub$.unsubscribe(); }
+      });
+    } else {
+      return;
+    }
 
     this.infoWindow.open(marker);
   }

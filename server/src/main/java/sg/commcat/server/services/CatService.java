@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import sg.commcat.server.models.Location;
 import sg.commcat.server.repositories.MongoRepo;
 import sg.commcat.server.repositories.S3Repo;
@@ -26,7 +28,20 @@ public class CatService {
         return mongoRepo.getCatLocations();
     }
 
-    public String processCatSubmission(String name, String gender, String community, MultipartFile picture, String likes,
+    public JsonObject getCatInfoForWindow(double lat, double lng) {
+        Document retrievedCat = mongoRepo.getCatInfoByCoords(lat, lng);
+
+        JsonObject catToReturn = Json.createObjectBuilder()
+                .add("id", retrievedCat.getString("_id"))
+                .add("name", retrievedCat.getString("name"))
+                .add("url", retrievedCat.getString("picture"))
+                .build();
+
+        return catToReturn;
+    }
+
+    public String processCatSubmission(String name, String gender, String community, MultipartFile picture,
+            String likes,
             String dislikes, String personality, String other) {
 
         Document newCat = new Document();
@@ -48,7 +63,7 @@ public class CatService {
         newCat.append("personality", personality);
         newCat.append("other", other);
         newCat.append("timestamp", System.currentTimeMillis());
-        
+
         mongoRepo.insertIntoSubmissions(newCat);
 
         return catId;

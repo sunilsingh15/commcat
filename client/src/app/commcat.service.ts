@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ElementRef, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -10,8 +10,17 @@ export class CommcatService {
 
   constructor(private http: HttpClient) { }
 
-  getCoordinates():Observable<any[]> {
+  getCoordinates(): Observable<any[]> {
     return this.http.get<any[]>('/api/locations');
+  }
+
+  getCatInfoForWindow(lat: number, lng: number): Observable<any> {
+
+    let params = new HttpParams()
+      .set('lat', lat)
+      .set('lng', lng);
+
+    return this.http.get('/api/cat', { params });
   }
 
   postForm(form: FormGroup, picture: ElementRef): Observable<any> {

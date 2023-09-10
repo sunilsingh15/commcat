@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.aggregation.ReplaceRootOperation;
 import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -41,5 +43,10 @@ public class MongoRepo {
 
         return template.aggregate(pipeline, "cats", Document.class).getMappedResults();
     }
+
+    public Document getCatInfoByCoords(double lat, double lng) {
+        Query query = new Query(Criteria.where("location.lat").is(lat).and("location.lng").is(lng));
+        return template.findOne(query, Document.class, "cats");
+    }    
 
 }
