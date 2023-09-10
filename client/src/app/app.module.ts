@@ -11,6 +11,8 @@ import { MapComponent } from './components/map/map.component';
 import { SubmitComponent } from './components/submit/submit.component';
 import { AboutComponent } from './components/about/about.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ThanksComponent } from './components/thanks/thanks.component';
+import { DonateComponent } from './components/donate/donate.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     MapComponent,
     SubmitComponent,
-    AboutComponent
+    AboutComponent,
+    ThanksComponent,
+    DonateComponent
   ],
   imports: [
     BrowserModule,
