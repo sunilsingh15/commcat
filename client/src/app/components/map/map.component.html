@@ -1,11 +1,15 @@
-<div class="container">
-  <h1>Cat Map</h1>
+<div class="flex flex-col items-center justify-center h-full">
+  <h1 class="text-3xl mt-10">Cat Map</h1>
   <br>
   <p>The information provided in the map below is not definite and should not be taken as such.</p>
   <div *ngIf="apiLoaded | async">
     <br>
     <google-map width="990px" height="550px" [options]="options">
-      <map-marker *ngFor="let position of markerPositions" [position]="position" [options]="markerOptions"></map-marker>
+      <map-marker #marker="mapMarker" *ngFor="let position of markerPositions" [position]="position" [options]="markerOptions" (mapClick)="openWindow(marker)"></map-marker>
+      <map-info-window>
+        <h4>{{ catName }}</h4>
+        <a routerLink="/cat">More Details</a>
+      </map-info-window>
     </google-map>
   </div>
 </div>
