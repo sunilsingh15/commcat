@@ -1,8 +1,12 @@
 package sg.commcat.server.controllers;
 
+import java.util.List;
+
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -19,6 +23,11 @@ public class CatController {
 
     @Autowired
     private CatService service;
+
+    @GetMapping(path = "/locations")
+    public ResponseEntity<List<Document>> getCatLocations() {
+        return ResponseEntity.ok(service.getCatLocations());
+    }
 
     @PostMapping(path = "/submit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> submitNewCat(@RequestPart String name, @RequestPart String gender, @RequestPart String community,

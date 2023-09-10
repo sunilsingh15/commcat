@@ -1,5 +1,6 @@
 package sg.commcat.server.services;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,6 +21,10 @@ public class CatService {
 
     @Autowired
     private MongoRepo mongoRepo;
+
+    public List<Document> getCatLocations() {
+        return mongoRepo.getCatLocations();
+    }
 
     public String processCatSubmission(String name, String gender, String community, MultipartFile picture, String likes,
             String dislikes, String personality, String other) {
@@ -65,6 +70,18 @@ public class CatService {
                 minLng = 103.68146779308476;
                 maxLat = 1.3314979054899967;
                 maxLng = 103.72103480638327;
+                break;
+            case "tampines":
+                minLat = 1.3493089047968339;
+                minLng = 103.92593013697028;
+                maxLat = 1.33480749779194;
+                maxLng = 103.98223506609067;
+                break;
+            case "woodlands":
+                minLat = 1.4222929112669354;
+                minLng = 103.77143944101523;
+                maxLat = 1.4564110719625358;
+                maxLng = 103.80025903568585;
                 break;
 
             default:
