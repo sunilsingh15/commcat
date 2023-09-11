@@ -6,6 +6,7 @@ import { SubmitComponent } from './components/submit/submit.component';
 import { AboutComponent } from './components/about/about.component';
 import { ThanksComponent } from './components/thanks/thanks.component';
 import { DonateComponent } from './components/donate/donate.component';
+import { CatComponent } from './components/cat/cat.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, title: 'Home | Commcat'},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'about', component: AboutComponent, title: 'About | Commcat'},
   {path: 'donate', component: DonateComponent, title: 'Donate | Commcat'},
   {path: 'thanks', component: ThanksComponent, title: 'Thanks! | Commcat'},
+  {path: 'cat/:catId', component: CatComponent},
   {path: '**', redirectTo: ''}
 ];
 

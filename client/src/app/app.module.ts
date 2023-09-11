@@ -13,6 +13,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThanksComponent } from './components/thanks/thanks.component';
 import { DonateComponent } from './components/donate/donate.component';
+import { CatComponent } from './components/cat/cat.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { DonateComponent } from './components/donate/donate.component';
     SubmitComponent,
     AboutComponent,
     ThanksComponent,
-    DonateComponent
+    DonateComponent,
+    CatComponent
   ],
   imports: [
     BrowserModule,

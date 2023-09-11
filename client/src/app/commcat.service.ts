@@ -11,7 +11,11 @@ export class CommcatService {
   constructor(private http: HttpClient) { }
 
   getCoordinates(): Observable<any[]> {
-    return this.http.get<any[]>('/api/locations');
+    return this.http.get<any[]>('/api/map/locations');
+  }
+
+  getCatInfo(catId: string): Observable<any> {
+    return this.http.get(`/api/map/cat/${catId}`);
   }
 
   getCatInfoForWindow(lat: number, lng: number): Observable<any> {
@@ -20,7 +24,7 @@ export class CommcatService {
       .set('lat', lat)
       .set('lng', lng);
 
-    return this.http.get('/api/cat', { params });
+    return this.http.get('/api/map/cat', { params });
   }
 
   postForm(form: FormGroup, picture: ElementRef): Observable<any> {
@@ -36,7 +40,7 @@ export class CommcatService {
     data.set('personality', form.value['personality']);
     data.set('other', form.value['other']);
 
-    return this.http.post('/api/submit', data);
+    return this.http.post('/api/map/submit', data);
   }
 
 
