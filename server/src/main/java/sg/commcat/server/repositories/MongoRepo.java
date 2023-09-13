@@ -74,15 +74,23 @@ public class MongoRepo {
     public List<Document> getThreads() {
 
         ProjectionOperation project = Aggregation.project()
-            .andInclude("_id")
-            .andInclude("username")
-            .andInclude("title")
-            .andInclude("timestamp")
-            .and("comments").size().as("comments");
+                .andInclude("_id")
+                .andInclude("username")
+                .andInclude("title")
+                .andInclude("timestamp")
+                .and("comments").size().as("comments");
 
         Aggregation pipeline = Aggregation.newAggregation(project);
 
         return template.aggregate(pipeline, "threads", Document.class).getMappedResults();
+    }
+
+    public void postNewThread(Document threadToInsert) {
+        template.save(threadToInsert, "threads");
+    }
+
+    public Document getThreadById(String id) {
+        return template.findOne(Query.query(Criteria.where("_id").is(id)), Document.class, "threads");
     }
 
 }

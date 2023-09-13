@@ -3,15 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing.module';
 import { ForumsComponent } from './components/forums/forums.component';
+import { NewThreadComponent } from './components/new-thread/new-thread.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    ForumsComponent
+    ForumsComponent,
+    NewThreadComponent
   ],
   imports: [
     CommonModule,
-    UserRoutingModule
+    UserRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class UserModule { }
