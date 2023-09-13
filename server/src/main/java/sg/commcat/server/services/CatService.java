@@ -1,5 +1,10 @@
 package sg.commcat.server.services;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -26,6 +31,26 @@ public class CatService {
 
     public List<Document> getCatLocations() {
         return mongoRepo.getCatLocations();
+    }
+
+    public boolean doesCatExist(String catId) {
+        return mongoRepo.doesCatExist(catId);
+    }
+
+    public JsonObject getCatInfo(String catId) {
+        Document retrievedCat = mongoRepo.getCatInfo(catId);
+
+        JsonObject catToReturn = Json.createObjectBuilder()
+                .add("name", retrievedCat.getString("name"))
+                .add("gender", retrievedCat.getString("gender"))
+                .add("picture", retrievedCat.getString("picture"))
+                .add("likes", retrievedCat.getString("likes"))
+                .add("dislikes", retrievedCat.getString("dislikes"))
+                .add("personality", retrievedCat.getString("personality"))
+                .add("other", retrievedCat.getString("other"))
+                .build();
+
+        return catToReturn;
     }
 
     public JsonObject getCatInfoForWindow(double lat, double lng) {
@@ -86,6 +111,12 @@ public class CatService {
                 maxLat = 1.3314979054899967;
                 maxLng = 103.72103480638327;
                 break;
+            case "choa-chu-kang":
+                minLat = 1.3694764873679894;
+                minLng = 103.7406678494042;
+                maxLat = 1.4049021996715547;
+                maxLng = 103.7552102102335;
+                break;
             case "tampines":
                 minLat = 1.3493089047968339;
                 minLng = 103.92593013697028;
@@ -98,7 +129,6 @@ public class CatService {
                 maxLat = 1.4564110719625358;
                 maxLng = 103.80025903568585;
                 break;
-
             default:
                 break;
         }
@@ -110,6 +140,50 @@ public class CatService {
         location.setLng(randomLng);
 
         return location;
+    }
+
+    public List<Document> getCatSubmissions() {
+
+        List<Document> submissions = mongoRepo.getSubmissions();
+        List<Document> filteredSubmissions = new ArrayList<>();
+
+        submissions.stream()
+                .forEach((s) -> {
+                    s.remove("location");
+
+                    long timestampMillis = s.getLong("timestamp");
+                    s.remove("timestamp");
+
+                    Instant instant = Instant.ofEpochMilli(timestampMillis);
+                    LocalDateTime timestamp = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    LocalDateTime now = LocalDateTime.now();
+
+                    if (timestamp.toLocalDate().isEqual(now.toLocalDate())) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
+                        String formattedTimestamp = timestamp.format(formatter);
+                        s.append("timestamp", formattedTimestamp);
+                    } else if (timestamp.toLocalDate().isEqual(now.toLocalDate().minusDays(1))) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
+                        String formattedTimestamp = timestamp.format(formatter);
+                        s.append("timestamp", formattedTimestamp);
+                    } else {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd 'at' h:mm a");
+                        String formattedTimestamp = timestamp.format(formatter);
+                        s.append("timestamp", formattedTimestamp);
+                    }
+
+                });
+
+        filteredSubmissions.addAll(submissions);
+        return filteredSubmissions;
+    }
+
+    public void approveSubmission(String id) {
+        mongoRepo.approveSubmission(id);
+    }
+
+    public void rejectSubmission(String id) {
+        mongoRepo.rejectSubmission(id);
     }
 
 }
