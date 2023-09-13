@@ -18,6 +18,26 @@ export class CommcatService {
     return this.http.get(`/api/map/cat/${catId}`);
   }
 
+  getSubmissions(): Observable<any[]> {
+    return this.http.get<any[]>('/api/map/submissions');
+  }
+
+  approveSubmission(id: string): Observable<any> {
+
+    let params = new HttpParams()
+      .set('id', id);
+
+    return this.http.post('/api/map/approve', '', { params });
+  }
+
+  rejectSubmission(id: string): Observable<any> {
+
+    let params = new HttpParams()
+      .set('id', id);
+
+    return this.http.delete('/api/map/reject', { params });
+  }
+
   getCatInfoForWindow(lat: number, lng: number): Observable<any> {
 
     let params = new HttpParams()
