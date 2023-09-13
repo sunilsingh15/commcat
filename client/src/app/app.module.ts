@@ -14,6 +14,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ThanksComponent } from './components/thanks/thanks.component';
 import { DonateComponent } from './components/donate/donate.component';
 import { CatComponent } from './components/cat/cat.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { ForbiddenComponent } from './components/forbidden/forbidden.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { CatComponent } from './components/cat/cat.component';
     AboutComponent,
     ThanksComponent,
     DonateComponent,
-    CatComponent
+    CatComponent,
+    RegisterComponent,
+    LoginComponent,
+    ForbiddenComponent
   ],
   imports: [
     BrowserModule,
