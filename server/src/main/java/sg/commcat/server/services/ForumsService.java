@@ -12,6 +12,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sg.commcat.server.models.Comment;
 import sg.commcat.server.models.Thread;
 import sg.commcat.server.repositories.MongoRepo;
 
@@ -91,7 +92,49 @@ public class ForumsService {
             retrievedDoc.append("timestamp", formattedTimestamp);
         }
 
+        for (Document comment : retrievedDoc.getList("comments", Document.class)) {
+            long commentTimestampMillis = comment.getLong("timestamp");
+            comment.remove("timestamp");
+
+            Instant commentInstant = Instant.ofEpochMilli(commentTimestampMillis);
+            LocalDateTime commentTimestamp = commentInstant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime commentNow = LocalDateTime.now();
+
+            if (timestamp.toLocalDate().isEqual(commentNow.toLocalDate())) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
+                String formattedTimestamp = commentTimestamp.format(formatter);
+                comment.append("timestamp", formattedTimestamp);
+            } else if (timestamp.toLocalDate().isEqual(commentNow.toLocalDate().minusDays(1))) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
+                String formattedTimestamp = commentTimestamp.format(formatter);
+                comment.append("timestamp", formattedTimestamp);
+            } else {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd 'at' h:mm a");
+                String formattedTimestamp = commentTimestamp.format(formatter);
+                comment.append("timestamp", formattedTimestamp);
+            }
+        }
+
         return retrievedDoc;
+    }
+
+    public String postNewComment(Comment comment) {
+
+        String commentId = UUID.randomUUID().toString().substring(0, 8);
+
+        Document thread = repo.getThreadById(comment.getId());
+        Document commentObj = new Document();
+
+        commentObj.append("_id", commentId)
+                .append("username", comment.getUsername())
+                .append("text", comment.getText())
+                .append("timestamp", System.currentTimeMillis());
+
+        thread.getList("comments", Document.class).add(commentObj);
+
+        repo.postCommentInThread(thread);
+
+        return commentId;
     }
 
 }

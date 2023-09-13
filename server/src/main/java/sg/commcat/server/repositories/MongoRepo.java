@@ -93,4 +93,8 @@ public class MongoRepo {
         return template.findOne(Query.query(Criteria.where("_id").is(id)), Document.class, "threads");
     }
 
+    public void postCommentInThread(Document thread) {
+        template.findAndReplace(Query.query(Criteria.where("_id").is(thread.getString("_id"))), thread, "threads");
+    }
+
 }
