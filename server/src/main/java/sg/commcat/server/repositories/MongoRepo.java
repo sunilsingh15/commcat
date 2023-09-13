@@ -21,7 +21,11 @@ public class MongoRepo {
     private MongoTemplate template;
 
     public void insertIntoSubmissions(Document newCat) {
-        template.insert(newCat, "cats");
+        template.insert(newCat, "submissions");
+    }
+
+    public Document getCatInfo(String catId) {
+        return template.findOne(Query.query(Criteria.where("_id").is(catId)), Document.class, "cats");
     }
 
     public List<Document> getCatLocations() {
@@ -47,6 +51,38 @@ public class MongoRepo {
     public Document getCatInfoByCoords(double lat, double lng) {
         Query query = new Query(Criteria.where("location.lat").is(lat).and("location.lng").is(lng));
         return template.findOne(query, Document.class, "cats");
-    }    
+    }
+
+    public boolean doesCatExist(String catId) {
+        return template.exists(Query.query(Criteria.where("_id").is(catId)), "cats");
+    }
+
+    public List<Document> getSubmissions() {
+        return template.findAll(Document.class, "submissions");
+    }
+
+    public void approveSubmission(String id) {
+        Document cat = template.findOne(Query.query(Criteria.where("_id").is(id)), Document.class, "submissions");
+        template.insert(cat, "cats");
+        template.remove(Query.query(Criteria.where("_id").is(id)), "submissions");
+    }
+
+    public void rejectSubmission(String id) {
+        template.remove(Query.query(Criteria.where("_id").is(id)), "submissions");
+    }
+
+    public List<Document> getThreads() {
+
+        ProjectionOperation project = Aggregation.project()
+            .andInclude("_id")
+            .andInclude("username")
+            .andInclude("title")
+            .andInclude("timestamp")
+            .and("comments").size().as("comments");
+
+        Aggregation pipeline = Aggregation.newAggregation(project);
+
+        return template.aggregate(pipeline, "threads", Document.class).getMappedResults();
+    }
 
 }
