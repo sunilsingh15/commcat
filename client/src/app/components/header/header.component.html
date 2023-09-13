@@ -1,7 +1,7 @@
-<nav class="bg-[#f3efe5] border-[#7f0019]">
+<nav class="bg-[#f3efe5] border-[#7f0019]" *ngIf="!isAdminLoggedIn && !isUserLoggedIn">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="/" class="flex items-center">
-        <img src="assets/logo.png" class="h-10 mr-3" alt="Flowbite Logo" />
+        <img src="assets/logo.png" class="h-10 mr-3" alt="Commcat logo" />
     </a>
     <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-[#7f0019]" aria-controls="navbar-default" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
@@ -25,6 +25,103 @@
         </li>
         <li>
           <a routerLink="/login" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<nav class="bg-[#f3efe5] border-[#7f0019]" *ngIf="isAdminLoggedIn">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/" class="flex items-center">
+        <img src="assets/logo.png" class="h-10 mr-3" alt="Commcat logo" />
+    </a>
+    <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-[#7f0019]" aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="#7f0019" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+        </svg>
+    </button>
+    <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+      <ul class="font-medium text-xl flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+        <li>
+          <a routerLink="/map" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">Map</a>
+        </li>
+        <li>
+          <a routerLink="/about" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">About</a>
+        </li>
+        <li>
+          <a routerLink="/donate" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">Donate</a>
+        </li>
+        <li>
+          <a routerLink="/submit" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">Submit</a>
+        </li>
+        <li>
+          <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbarAdmin" data-dropdown-trigger="hover" data-dropdown-delay="50" class="flex items-center justify-between w-full py-2 pl-3 pr-4 text-[#7f0019] rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 md:w-auto">admin<svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+          </svg></button>
+                    <div id="dropdownNavbarAdmin" class="z-10 hidden font-normal bg-[#f3efe5] divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownLargeButton">
+                          <li>
+                            <a routerLink="/dashboard" class="block px-4 py-2 hover:underline">
+                              Dashboard
+                              <span class="inline-flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-[#7f0019] rounded-full">
+                                {{ submissions }}
+                              </span>
+                            </a>
+
+                          </li>
+                        </ul>
+                        <div class="py-1">
+                          <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:underline" (click)="logout()">Logout</a>
+                        </div>
+                    </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<nav class="bg-[#f3efe5] border-[#7f0019]" *ngIf="isUserLoggedIn">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/" class="flex items-center">
+        <img src="assets/logo.png" class="h-10 mr-3" alt="Commcat logo" />
+    </a>
+    <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-[#7f0019]" aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="#7f0019" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+        </svg>
+    </button>
+    <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+      <ul class="font-medium text-xl flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+        <li>
+          <a routerLink="/map" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">Map</a>
+        </li>
+        <li>
+          <a routerLink="/about" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">About</a>
+        </li>
+        <li>
+          <a routerLink="/donate" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">Donate</a>
+        </li>
+        <li>
+          <a routerLink="/submit" class="block py-2 pl-3 pr-4 text-[#7f0019] rounded md:bg-transparent md:p-0">Submit</a>
+        </li>
+        <li>
+          <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbarUser" data-dropdown-trigger="hover" data-dropdown-delay="50" class="flex items-center justify-between w-full py-2 pl-3 pr-4 text-[#7f0019] rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 md:w-auto">user<svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+          </svg></button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownNavbarUser" class="z-10 hidden font-normal bg-[#f3efe5] divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownLargeButton">
+                          <li>
+                            <a routerLink="/forums" class="block px-4 py-2 hover:underline">Forums</a>
+                          </li>
+                        </ul>
+                        <div class="py-1">
+                          <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:underline" (click)="logout()">Logout</a>
+                        </div>
+                    </div>
         </li>
       </ul>
     </div>
