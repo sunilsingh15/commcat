@@ -1,9 +1,9 @@
 package sg.commcat.server.services;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,18 @@ public class ForumsService {
             document.remove("timestamp");
 
             Instant instant = Instant.ofEpochMilli(timestampMillis);
-            LocalDateTime timestamp = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
-            LocalDateTime now = LocalDateTime.now();
 
-            if (timestamp.toLocalDate().isEqual(now.toLocalDate())) {
+            ZonedDateTime timestamp = instant.atZone(ZoneOffset.ofHours(8));
+            ZonedDateTime now = ZonedDateTime.now(ZoneOffset.ofHours(8));
+
+            LocalDate timestampDate = timestamp.toLocalDate();
+            LocalDate nowDate = now.toLocalDate();
+
+            if (timestampDate.isEqual(nowDate)) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
                 String formattedTimestamp = timestamp.format(formatter);
                 document.append("timestamp", formattedTimestamp);
-            } else if (timestamp.toLocalDate().isEqual(now.toLocalDate().minusDays(1))) {
+            } else if (timestampDate.isEqual(nowDate.minusDays(1))) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
                 String formattedTimestamp = timestamp.format(formatter);
                 document.append("timestamp", formattedTimestamp);
@@ -76,14 +80,17 @@ public class ForumsService {
         retrievedDoc.remove("timestamp");
 
         Instant instant = Instant.ofEpochMilli(timestampMillis);
-        LocalDateTime timestamp = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime now = LocalDateTime.now();
+        ZonedDateTime timestamp = instant.atZone(ZoneOffset.ofHours(8));
+        ZonedDateTime now = ZonedDateTime.now(ZoneOffset.ofHours(8));
 
-        if (timestamp.toLocalDate().isEqual(now.toLocalDate())) {
+        LocalDate timestampDate = timestamp.toLocalDate();
+        LocalDate nowDate = now.toLocalDate();
+
+        if (timestampDate.isEqual(nowDate)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
             String formattedTimestamp = timestamp.format(formatter);
             retrievedDoc.append("timestamp", formattedTimestamp);
-        } else if (timestamp.toLocalDate().isEqual(now.toLocalDate().minusDays(1))) {
+        } else if (timestampDate.isEqual(nowDate.minusDays(1))) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
             String formattedTimestamp = timestamp.format(formatter);
             retrievedDoc.append("timestamp", formattedTimestamp);
@@ -98,20 +105,24 @@ public class ForumsService {
             comment.remove("timestamp");
 
             Instant commentInstant = Instant.ofEpochMilli(commentTimestampMillis);
-            LocalDateTime commentTimestamp = commentInstant.atOffset(ZoneOffset.ofHours(8)).toLocalDateTime();
-            LocalDateTime commentNow = LocalDateTime.now();
 
-            if (commentTimestamp.toLocalDate().isEqual(commentNow.toLocalDate())) {
+            ZonedDateTime commentTimeStamp = commentInstant.atZone(ZoneOffset.ofHours(8));
+            ZonedDateTime commentNow = ZonedDateTime.now(ZoneOffset.ofHours(8));
+
+            LocalDate commentTimestampDate = commentTimeStamp.toLocalDate();
+            LocalDate commentNowDate = commentNow.toLocalDate();
+
+            if (commentTimestampDate.isEqual(commentNowDate)) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
-                String formattedTimestamp = commentTimestamp.format(formatter);
+                String formattedTimestamp = commentTimeStamp.format(formatter);
                 comment.append("timestamp", formattedTimestamp);
-            } else if (commentTimestamp.toLocalDate().isEqual(commentNow.toLocalDate().minusDays(1))) {
+            } else if (commentTimestampDate.isEqual(commentNowDate.minusDays(1))) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
-                String formattedTimestamp = commentTimestamp.format(formatter);
+                String formattedTimestamp = commentTimeStamp.format(formatter);
                 comment.append("timestamp", formattedTimestamp);
             } else {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd 'at' h:mm a");
-                String formattedTimestamp = commentTimestamp.format(formatter);
+                String formattedTimestamp = commentTimeStamp.format(formatter);
                 comment.append("timestamp", formattedTimestamp);
             }
         }
