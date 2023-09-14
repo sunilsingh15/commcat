@@ -1,7 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ForumsService } from 'src/app/forums.service';
 import { Threads } from 'src/app/models/threads';
+import { StorageService } from 'src/app/storage.service';
 
 @Component({
   selector: 'app-forums',
@@ -15,8 +17,13 @@ export class ForumsComponent implements OnInit {
 
   threadsSub$: Subscription;
   service = inject(ForumsService);
+  router = inject(Router);
 
   ngOnInit(): void {
+
+    if (!StorageService.isUserLoggedIn()) {
+      this.router.navigate(['/forbidden']);
+    }
 
     this.threadsSub$ = this.service.getThreads().subscribe({
       next: (result) => {
