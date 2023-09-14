@@ -10,6 +10,7 @@ import { CatComponent } from './components/cat/cat.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ForbiddenComponent } from './components/forbidden/forbidden.component';
+import { DonateThanksComponent } from './components/donate-thanks/donate-thanks.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, title: 'Home | Commcat' },
@@ -18,12 +19,13 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent, title: 'About | Commcat' },
   { path: 'donate', component: DonateComponent, title: 'Donate | Commcat' },
   { path: 'thanks', component: ThanksComponent, title: 'Thanks! | Commcat' },
+  { path: 'donate/thanks', component: DonateThanksComponent, title: 'Thank you for your donation! | Commcat' },
   { path: 'cat/:catId', component: CatComponent },
   { path: 'register', component: RegisterComponent, title: 'Register | Commcat' },
   { path: 'login', component: LoginComponent, title: 'Login | Commcat' },
   { path: 'dashboard', loadChildren: () => import("./modules/admin/admin.module").then(m => m.AdminModule) },
   { path: 'forums', loadChildren: () => import("./modules/user/user.module").then(m => m.UserModule) },
-  {path: 'forbidden', component: ForbiddenComponent, title: 'Forbidden | Commcat'},
+  { path: 'forbidden', component: ForbiddenComponent, title: 'Forbidden | Commcat' },
   { path: '**', redirectTo: '' }
 ];
 

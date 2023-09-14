@@ -17,6 +17,7 @@ import { CatComponent } from './components/cat/cat.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ForbiddenComponent } from './components/forbidden/forbidden.component';
+import { DonateThanksComponent } from './components/donate-thanks/donate-thanks.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ForbiddenComponent } from './components/forbidden/forbidden.component';
     CatComponent,
     RegisterComponent,
     LoginComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    DonateThanksComponent
   ],
   imports: [
     BrowserModule,
