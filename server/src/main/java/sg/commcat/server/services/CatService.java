@@ -1,8 +1,9 @@
 package sg.commcat.server.services;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,32 +148,34 @@ public class CatService {
         List<Document> submissions = mongoRepo.getSubmissions();
         List<Document> filteredSubmissions = new ArrayList<>();
 
-        submissions.stream()
-                .forEach((s) -> {
-                    s.remove("location");
+        submissions.stream().forEach((s) -> {
+            s.remove("location");
 
-                    long timestampMillis = s.getLong("timestamp");
-                    s.remove("timestamp");
+            long timestampMillis = s.getLong("timestamp");
+            s.remove("timestamp");
 
-                    Instant instant = Instant.ofEpochMilli(timestampMillis);
-                    LocalDateTime timestamp = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
-                    LocalDateTime now = LocalDateTime.now();
+            Instant instant = Instant.ofEpochMilli(timestampMillis);
+            ZonedDateTime timestamp = instant.atZone(ZoneOffset.ofHours(8));
 
-                    if (timestamp.toLocalDate().isEqual(now.toLocalDate())) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
-                        String formattedTimestamp = timestamp.format(formatter);
-                        s.append("timestamp", formattedTimestamp);
-                    } else if (timestamp.toLocalDate().isEqual(now.toLocalDate().minusDays(1))) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
-                        String formattedTimestamp = timestamp.format(formatter);
-                        s.append("timestamp", formattedTimestamp);
-                    } else {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd 'at' h:mm a");
-                        String formattedTimestamp = timestamp.format(formatter);
-                        s.append("timestamp", formattedTimestamp);
-                    }
+            ZonedDateTime now = ZonedDateTime.now(ZoneOffset.ofHours(8));
 
-                });
+            LocalDate timestampDate = timestamp.toLocalDate();
+            LocalDate nowDate = now.toLocalDate();
+
+            if (timestampDate.isEqual(nowDate)) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
+                String formattedTimestamp = timestamp.format(formatter);
+                s.append("timestamp", formattedTimestamp);
+            } else if (timestampDate.isEqual(nowDate.minusDays(1))) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
+                String formattedTimestamp = timestamp.format(formatter);
+                s.append("timestamp", formattedTimestamp);
+            } else {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd 'at' h:mm a");
+                String formattedTimestamp = timestamp.format(formatter);
+                s.append("timestamp", formattedTimestamp);
+            }
+        });
 
         filteredSubmissions.addAll(submissions);
         return filteredSubmissions;
