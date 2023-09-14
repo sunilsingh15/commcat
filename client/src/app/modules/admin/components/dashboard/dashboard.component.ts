@@ -55,7 +55,10 @@ export class DashboardComponent implements OnInit {
       next: (result) => {
         const alert = document.getElementById('approve-success-alert');
         alert?.classList.remove('hidden');
-        this.router.navigate(['/dashboard']);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       },
       error: (err) => { console.log(err); },
       complete: () => { this.approveSub$.unsubscribe(); }
@@ -69,14 +72,15 @@ export class DashboardComponent implements OnInit {
       next: (result) => {
         const alert = document.getElementById('reject-success-alert');
         alert?.classList.remove('hidden');
-        this.router.navigate(['/dashboard']);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       },
       error: (err) => { console.log(err); },
       complete: () => { this.rejectSub$.unsubscribe(); }
     });
 
   }
-
-
 
 }
