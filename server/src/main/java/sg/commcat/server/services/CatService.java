@@ -118,10 +118,16 @@ public class CatService {
                 maxLat = 1.4049021996715547;
                 maxLng = 103.7552102102335;
                 break;
+            case "clementi":
+                minLat = 1.3202471897740584;
+                minLng = 103.75972410645711;
+                maxLat = 1.3214088666863821;
+                maxLng = 103.75914311364353;
+                break;
             case "tampines":
-                minLat = 1.3493089047968339;
+                minLat = 1.33480749779194;
                 minLng = 103.92593013697028;
-                maxLat = 1.33480749779194;
+                maxLat = 1.3493089047968339;
                 maxLng = 103.98223506609067;
                 break;
             case "woodlands":
