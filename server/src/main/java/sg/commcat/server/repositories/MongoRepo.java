@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
@@ -58,7 +59,9 @@ public class MongoRepo {
     }
 
     public List<Document> getSubmissions() {
-        return template.findAll(Document.class, "submissions");
+        Query query = new Query();
+        query.with(Sort.by(Sort.Order.desc("timestamp")));
+        return template.find(query, Document.class, "submissions");
     }
 
     public void approveSubmission(String id) {
