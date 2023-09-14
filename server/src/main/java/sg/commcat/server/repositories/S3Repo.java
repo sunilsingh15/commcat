@@ -34,4 +34,8 @@ public class S3Repo {
 
         return bucketEndpointUrl + catId;
     }
+
+    public void deleteSubmission(String id) {
+        s3.deleteObject("commcat", id);
+    }
 }

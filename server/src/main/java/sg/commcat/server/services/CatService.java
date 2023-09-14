@@ -183,6 +183,7 @@ public class CatService {
     }
 
     public void rejectSubmission(String id) {
+        s3Repo.deleteSubmission(id);
         mongoRepo.rejectSubmission(id);
     }
 
