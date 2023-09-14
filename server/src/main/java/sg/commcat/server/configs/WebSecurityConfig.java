@@ -23,7 +23,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/api/auth/**", "/api/map/**", "/api/forums/**").permitAll().anyRequest().authenticated())
+                        req -> req.requestMatchers("/**","/api/auth/**", "/api/map/**", "/api/forums/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return httpSecurity.build();
