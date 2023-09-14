@@ -3,6 +3,7 @@ package sg.commcat.server.services;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,14 +98,14 @@ public class ForumsService {
             comment.remove("timestamp");
 
             Instant commentInstant = Instant.ofEpochMilli(commentTimestampMillis);
-            LocalDateTime commentTimestamp = commentInstant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime commentTimestamp = commentInstant.atOffset(ZoneOffset.ofHours(8)).toLocalDateTime();
             LocalDateTime commentNow = LocalDateTime.now();
 
-            if (timestamp.toLocalDate().isEqual(commentNow.toLocalDate())) {
+            if (commentTimestamp.toLocalDate().isEqual(commentNow.toLocalDate())) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Today at' h:mm a");
                 String formattedTimestamp = commentTimestamp.format(formatter);
                 comment.append("timestamp", formattedTimestamp);
-            } else if (timestamp.toLocalDate().isEqual(commentNow.toLocalDate().minusDays(1))) {
+            } else if (commentTimestamp.toLocalDate().isEqual(commentNow.toLocalDate().minusDays(1))) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Yesterday at' h:mm a");
                 String formattedTimestamp = commentTimestamp.format(formatter);
                 comment.append("timestamp", formattedTimestamp);
